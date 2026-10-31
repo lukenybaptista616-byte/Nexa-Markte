@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nexa Market</title>
+<style>
+:root{--bg:#0A0C12;--card:#11141C;--line:#232836;--gold:#EDB95E;--gold2:#D99A33;--ink:#F2F2F2;--mut:#8D93A3;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px}
+.logo{font-weight:800;letter-spacing:.2em;color:var(--gold);font-size:1.15rem}
+.rb{width:44px;height:44px;border-radius:14px;background:#12151d;border:1px solid var(--line);color:var(--ink);font-size:1.2rem;position:relative;cursor:pointer}
+.badge{position:absolute;top:-6px;right:-6px;background:var(--gold);color:#111;border-radius:99px;font-size:.7rem;font-weight:700;min-width:20px;height:20px;display:none;align-items:center;justify-content:center}
+main{max-width:720px;margin:0 auto;padding:0 18px}
+h1{font-size:1.7rem;margin:6px 0 2px}
+.sub{color:var(--mut);margin:0 0 14px}
+.chips{display:flex;gap:10px;overflow-x:auto;padding:4px 0 12px}
+.chip{white-space:nowrap;padding:11px 20px;border-radius:99px;border:0;background:#141821;color:var(--ink);font-size:.95rem;cursor:pointer}
+.chip.on{background:var(--gold);color:#111;font-weight:700}
+.sr{display:flex;gap:10px;margin:4px 0 12px}
+#q{flex:1;padding:15px 16px;border-radius:16px;border:1px solid var(--line);background:#0E1118;color:var(--ink);font-size:1rem;outline:none}
+#q:focus{border-color:var(--gold)}
+.cnt{color:var(--mut);font-size:.9rem;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:380px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid #1a1e29;border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.cover{aspect-ratio:3/4;background:linear-gradient(160deg,#1b1810,#0d0f15);border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;position:relative}
+.cover small{letter-spacing:.25em;color:var(--gold);font-size:.6rem}
+.cover b{font-size:1.1rem;margin-top:8px}
+.cb{padding:14px;display:flex;flex-direction:column;flex:1}
+.row{display:flex;justify-content:space-between;align-items:center}
+.tag{background:#1a1f2b;border-radius:99px;padding:5px 12px;font-size:.78rem}
+.off{color:var(--gold);font-size:.8rem}
+.cb h2{font-size:1rem;font-weight:500;margin:10px 0 4px}
+.cb p{color:var(--mut);font-size:.82rem;margin:0 0 8px;flex:1}
+.price{color:var(--gold);font-weight:800;font-size:1.1rem;margin:6px 0 10px}
+.old{color:var(--mut);text-decoration:line-through;font-size:.8rem;font-weight:400;margin-left:6px}
+.acts{display:flex;gap:8px}
+.buy{flex:1;padding:12px 6px;border:0;border-radius:14px;background:linear-gradient(180deg,var(--gold),var(--gold2));color:#111;font-weight:700;font-size:.9rem;cursor:pointer;text-align:center;text-decoration:none}
+.plus{width:46px;border-radius:14px;border:1px solid var(--gold);background:transparent;color:var(--gold);font-size:1.3rem;cursor:pointer}
+.tk{display:block;text-align:center;color:var(--gold);font-size:.82rem;margin-top:10px;text-decoration:none}
+.empty{color:var(--mut);text-align:center;padding:30px 0}
+.sup{margin-top:34px}
+.sup h3{margin:0 0 10px}
+.sup a{display:block;padding:14px;border:1px solid var(--line);border-radius:14px;margin-top:10px;color:var(--ink);text-decoration:none;text-align:center;background:var(--card)}
+nav.bn{position:fixed;left:0;right:0;bottom:0;background:#0B0E14;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px));z-index:5}
+nav.bn a,nav.bn button{background:none;border:0;color:var(--mut);font-size:.78rem;text-decoration:none;text-align:center;cursor:pointer;position:relative}
+nav.bn span{display:block;font-size:1.3rem}
+nav.bn .on{color:var(--gold)}
+.fab{position:fixed;right:18px;bottom:calc(86px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:2px solid var(--gold);background:#1c1a14;color:var(--gold);font-size:1.5rem;cursor:pointer;z-index:7;box-shadow:0 6px 20px rgba(237,185,94,.3)}
+.pop{position:fixed;right:18px;bottom:calc(158px + env(safe-area-inset-bottom,0px));width:min(82%,300px);background:#14171f;border:1px solid #2b2f3b;border-radius:22px;padding:12px;z-index:7;display:none;max-height:70vh;overflow:auto}
+.pop.on{display:block}
+.pop .who{display:flex;align-items:center;gap:10px;background:#211c12;border:1px solid #4a3b1c;border-radius:16px;padding:10px;margin-bottom:8px}
+.av{width:42px;height:42px;border-radius:50%;background:var(--gold);color:#111;font-weight:800;display:flex;align-items:center;justify-content:center}
+.who small{color:var(--gold);display:block}
+.pop a,.pop button.mi{display:flex;gap:12px;width:100%;padding:12px 8px;color:var(--ink);text-decoration:none;background:none;border:0;font-size:1rem;cursor:pointer;text-align:left}
+.pop a.red{color:#ff5a5a;border-top:1px solid var(--line);margin-top:6px}
+.pop a.gold{background:#211c12;border:1px solid #4a3b1c;border-radius:14px;color:var(--gold);font-weight:700;margin-top:6px}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:8}
+.ov.on{display:block}
+#cart{position:fixed;top:0;bottom:0;right:0;width:min(88%,360px);background:#0F1219;border-left:1px solid var(--gold);z-index:9;transform:translateX(105%);transition:transform .25s;padding:calc(18px + env(safe-area-inset-top,0px)) 18px 18px;overflow:auto}
+#cart.on{transform:none}
+#cart h4{margin:0 0 14px;color:var(--gold);letter-spacing:.12em}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.it button{background:none;border:0;color:var(--mut);cursor:pointer}
+#cart .buy{display:block;margin-top:12px;padding:14px}
+#cart .ghost{display:block;width:100%;margin-top:10px;padding:13px;background:none;border:1px solid var(--line);border-radius:14px;color:var(--ink);cursor:pointer}
+#admin{display:none}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.panel h2{margin:0 0 8px;font-size:1.15rem}
+.panel input,.panel select,.panel textarea{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:#0E1118;color:var(--ink);font:inherit}
+.panel textarea{min-height:110px;font-family:monospace;font-size:.8rem}
+.li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">NEXA MARKET</div>
+  <button class="rb" id="cb" aria-label="Carrinho">🛒<span class="badge" id="bd">0</span></button>
+</header>
+
+<main id="store">
+  <h1>Marketplace</h1>
+  <p class="sub">Explora ebooks, livros, músicas e links da Nexa Market.</p>
+  <div class="chips" id="chips"></div>
+  <div class="sr"><input id="q" type="search" placeholder="Pesquisar produtos…" autocomplete="off"></div>
+  <div class="cnt" id="cnt"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="none" style="display:none">Nenhum produto encontrado.</div>
+  <section class="sup" id="suporte">
+    <h3>Suporte</h3>
+    <a id="sw" href="#" target="_blank" rel="noopener">💬 Falar no WhatsApp · 952 978 446</a>
+    <a id="se" href="#">✉️ Enviar email</a>
+  </section>
+</main>
+
+<main id="admin">
+  <h1>Painel Nexa Market</h1>
+  <p class="sub" id="asub">Produtos</p>
+  <div id="asec"></div>
+</main>
+
+<div class="ov" id="ov"></div>
+<aside id="cart">
+  <h4>O TEU CARRINHO</h4>
+  <div id="items"></div>
+  <div id="tot" class="price"></div>
+  <a class="buy" id="checkout" href="#" target="_blank" rel="noopener">Finalizar compra</a>
+  <button class="ghost" id="keep">Continuar a ver</button>
+</aside>
+
+<div class="pop" id="pop"></div>
+<button class="fab" id="fab" aria-label="Menu">☰</button>
+
+<nav class="bn">
+  <a href="#" class="on"><span>🛍️</span>Loja</a>
+  <button id="bcart"><span>🛒</span>Carrinho</button>
+  <a href="#suporte"><span>💬</span>Suporte</a>
+</nav>
+
+<script id="data" type="application/json">[{"id":"isto-nao-e-lixo","cat":"Ebooks","name":"Isto não é lixo","desc":"Truques e receitas para aproveitar sobras e partes dos alimentos que normalmente vão para o lixo.","price":null,"off":0,"buy":"","tiktok":""}]</script>
+<script>
+var WHATSAPP = "244952978446";
+var EMAIL = "lukenybaptista616@gmail.com";
+var CATS = ["Todos","Ebooks","Livros","Músicas","Links"];
+var PRODUCTS = JSON.parse(document.getElementById("data").textContent);
+var cart = [], cat = "Todos", term = "";
+try{ cart = JSON.parse(localStorage.getItem("nexa_cart")||"[]"); }catch(e){ cart=[]; }
+function save(){ try{ localStorage.setItem("nexa_cart", JSON.stringify(cart)); }catch(e){} }
+var $ = function(i){ return document.getElementById(i); };
+function wa(t){ return "https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(t); }
+function fin(p){ return p.price==null ? null : Math.round(p.price*(100-(p.off||0))/100); }
+function fmt(n){ return n==null ? "Preço em breve" : n.toLocaleString("pt-PT")+" Kz"; }
+function find(id){ return PRODUCTS.filter(function(p){return p.id===id;})[0]; }
+function norm(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function el(t,c,x){ var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e; }
+function lnk(c,x,h){ var a=el("a",c,x); a.href=h; a.target="_blank"; a.rel="noopener"; return a; }
+
+$("sw").href = wa("Olá! Preciso de ajuda com a Nexa Market.");
+if(EMAIL){ $("se").href="mailto:"+EMAIL; $("se").textContent="✉️ "+EMAIL; } else { $("se").style.display="none"; }
+
+function chips(){
+  var b=$("chips"); b.innerHTML="";
+  CATS.forEach(function(c){ var x=el("button","chip"+(c===cat?" on":""),c); x.onclick=function(){cat=c;chips();list();}; b.appendChild(x); });
+}
+function list(){
+  var g=$("grid"); g.innerHTML=""; var t=norm(term), n=0;
+  PRODUCTS.forEach(function(p){
+    if(cat!=="Todos" && p.cat!==cat) return;
+    if(t && norm(p.name+" "+p.desc+" "+p.cat).indexOf(t)<0) return;
+    n++;
+    var c=el("div","card"), cv=el("div","cover");
+    cv.appendChild(el("small",null,"NEXA MARKET")); cv.appendChild(el("b",null,p.name)); c.appendChild(cv);
+    var b=el("div","cb"), r=el("div","row"); r.appendChild(el("span","tag",p.cat));
+    if(p.off) r.appendChild(el("span","off",p.off+"%"));
+    b.appendChild(r); b.appendChild(el("h2",null,p.name)); b.appendChild(el("p",null,p.desc));
+    var pr=el("div","price",fmt(fin(p)));
+    if(p.off && p.price!=null) pr.appendChild(el("span","old",fmt(p.price)));
+    b.appendChild(pr);
+    var a=el("div","acts");
+    var by = p.buy ? lnk("buy","🛒 Comprar",p.buy) : el("button","buy","🛒 Comprar");
+    if(!p.buy) by.onclick=function(){ addCart(p.id); };
+    var pl=el("button","plus","+"); pl.onclick=function(){ addCart(p.id,true); };
+    a.appendChild(by); a.appendChild(pl); b.appendChild(a);
+    if(p.tiktok) b.appendChild(lnk("tk","▶ Ver vídeo no TikTok",p.tiktok));
+    c.appendChild(b); g.appendChild(c);
+  });
+  $("none").style.display=n?"none":"block";
+  $("cnt").textContent=n+(n===1?" produto encontrado":" produtos encontrados");
+}
+function render(){
+  var n=cart.length, bd=$("bd"); bd.textContent=n; bd.style.display=n?"flex":"none";
+  var box=$("items"); box.innerHTML="";
+  if(!n){ box.appendChild(el("p","empty","O carrinho está vazio.")); $("tot").textContent=""; $("checkout").style.display="none"; return; }
+  $("checkout").style.display="block";
+  var sum=0, all=true, names=[], lb="";
+  cart.forEach(function(id,i){
+    var p=find(id); if(!p) return; names.push(p.name); lb=p.buy;
+    var f=fin(p); if(f==null) all=false; else sum+=f;
+    var d=el("div","it"); d.appendChild(el("span",null,p.name));
+    var r=el("button",null,"Remover"); r.onclick=function(){ cart.splice(i,1); save(); render(); };
+    d.appendChild(r); box.appendChild(d);
+  });
+  $("tot").textContent=all?"Total: "+fmt(sum):"";
+  $("checkout").href=(names.length===1&&lb)?lb:wa("Olá! Quero comprar: "+names.join(", "));
+}
+function addCart(id,stay){ if(cart.indexOf(id)<0){cart.push(id);save();} render(); if(!stay) openCart(); }
+function openCart(){ $("cart").classList.add("on"); $("ov").classList.add("on"); }
+function closeAll(){ $("cart").classList.remove("on"); $("ov").classList.remove("on"); $("pop").classList.remove("on"); }
+$("cb").onclick=openCart; $("bcart").onclick=openCart; $("ov").onclick=closeAll; $("keep").onclick=closeAll;
+$("q").oninput=function(){ term=this.value; list(); };
+
+var ADM=[["📦","Produtos"],["📊","Vendas"],["👥","Clientes"],["🎓","Membros"],["📈","Analytics"],["🔌","Integrações"],["🤝","Afiliados"],["🏆","Ranking"],["♡","Favoritos"],["🗃️","Inventário"]];
+function popMenu(isAdmin){
+  var p=$("pop"); p.innerHTML="";
+  var w=el("div","who"); w.appendChild(el("div","av","N"));
+  var t=el("div"); t.appendChild(el("b",null,isAdmin?"Nexa Market":"Menu")); t.appendChild(el("small",null,isAdmin?"Painel":"Explorar")); w.appendChild(t); p.appendChild(w);
+  if(isAdmin){
+    ADM.forEach(function(m){ var b=el("button","mi",m[0]+"  "+m[1]); b.onclick=function(){ section(m[1]); p.classList.remove("on"); }; p.appendChild(b); });
+    var s=el("a","red","↪  Sair"); s.href="#"; p.appendChild(s);
+  } else {
+    CATS.slice(1).forEach(function(c){ var b=el("button","mi","🏷️  "+c); b.onclick=function(){ cat=c; chips(); list(); p.classList.remove("on"); window.scrollTo(0,0); }; p.appendChild(b); });
+    var s=el("a",null,"💬  Suporte"); s.href="#suporte"; s.onclick=function(){ p.classList.remove("on"); }; p.appendChild(s);
+    p.appendChild(lnk("gold","Queres aprender a fazer dinheiro com marketing digital?",wa("Olá! Quero aprender a fazer dinheiro com marketing digital.")));
+  }
+}
+$("fab").onclick=function(){ $("pop").classList.toggle("on"); };
+
+function section(name){
+  $("asub").textContent=name; var s=$("asec"); s.innerHTML="";
+  if(name==="Produtos"){
+    var p=el("div","panel"); p.appendChild(el("h2",null,"Novo produto"));
+    var f={}; [["name","Nome"],["desc","Descrição curta"],["price","Preço em Kz (número)"],["off","Desconto % (opcional)"],["buy","Link da Okanda"],["tiktok","Link do vídeo no TikTok"]].forEach(function(k){ f[k[0]]=el("input"); f[k[0]].placeholder=k[1]; p.appendChild(f[k[0]]); });
+    f.cat=el("select"); CATS.slice(1).forEach(function(c){ var o=el("option",null,c); o.value=c; f.cat.appendChild(o); }); p.appendChild(f.cat);
+    var out=el("textarea"); out.readOnly=true;
+    var g=el("button","buy","Gerar produto"); g.style.cssText="width:100%;margin-top:8px";
+    g.onclick=function(){
+      var nm=f.name.value.trim(); if(!nm){ out.value="Escreve o nome."; return; }
+      var o={id:norm(nm).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),cat:f.cat.value,name:nm,desc:f.desc.value.trim(),price:f.price.value?Number(f.price.value):null,off:Number(f.off.value)||0,buy:f.buy.value.trim(),tiktok:f.tiktok.value.trim()};
+      out.value=JSON.stringify(o);
+    };
+    p.appendChild(g); p.appendChild(out);
+    p.appendChild(el("p","sub","Copia o texto e envia ao Claude na conversa para o produto entrar no site."));
+    s.appendChild(p);
+    var l=el("div","panel"); l.appendChild(el("h2",null,"Produtos no site ("+PRODUCTS.length+")"));
+    PRODUCTS.forEach(function(x){ var r=el("div","li"); r.appendChild(el("span",null,x.name)); r.appendChild(el("span",null,x.cat)); l.appendChild(r); });
+    s.appendChild(l);
+  } else {
+    var d=el("div","panel"); d.appendChild(el("h2",null,name));
+    d.appendChild(el("p","sub","Em breve. Por agora, as vendas e os clientes ficam registados na Okanda."));
+    s.appendChild(d);
+  }
+}
+function route(){
+  var a=location.hash==="#admin";
+  $("store").style.display=a?"none":"block"; $("admin").style.display=a?"block":"none";
+  popMenu(a); closeAll(); if(a) section("Produtos");
+}
+window.addEventListener("hashchange",route);
+cart=cart.filter(function(id){return !!find(id);});
+chips(); list(); render(); route();
+</script>
+</body>
+</html>
